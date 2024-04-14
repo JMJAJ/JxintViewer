@@ -1,6 +1,7 @@
 # JxintViewer (Windows-style Interface)
 
 A web application that provides a Windows-style interface for managing and viewing online IP cameras.
+(code is super chaotic cuz I was just adding new features without organizing them)
 
 ## Installation
 
