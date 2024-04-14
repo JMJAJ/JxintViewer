@@ -7,7 +7,7 @@ A web application that provides a Windows-style interface for managing and viewi
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your_username/your_repository.git
+    git clone https://github.com/JMJAJ/JxintViewer.git
     ```
 
 2. Navigate to the project directory:
