@@ -11,7 +11,6 @@
             padding: 0;
             font-family: Arial, sans-serif;
             overflow: hidden;
-            /* Hide scrollbar of body */
             background-image: linear-gradient(to bottom,
                     rgba(0, 0, 0, 0.8),
                     rgba(0, 0, 0, 0.8)), url("https://i.imghippo.com/files/nYunp1707857311.png");
@@ -19,17 +18,13 @@
             background-position: center;
             background-attachment: fixed;
             color: #fff;
-            /* Light text color */
         }
 
         .window {
             position: absolute;
             background-color: #333;
-            /* Dark window background color */
             border: 1px solid #666;
-            /* Dark window border color */
             box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.1);
-            /* Light box shadow */
             overflow: hidden;
             z-index: 100;
         }
@@ -50,24 +45,16 @@
             margin-bottom: 5px;
             padding: 5px;
             background-color: #3f6238;
-            /* Button background color */
             border: 1px solid #ccc;
-            /* Button border */
             border-radius: 5px;
-            /* Rounded corners */
             cursor: pointer;
-            /* Cursor on hover */
             transition: background-color 0.3s ease;
-            /* Smooth transition on hover */
             color: #000;
-            /* Light text color */
         }
 
         .camera-list-item:hover {
             background-color: #e1e174;
-            /* Button background color on hover */
             color: #000;
-            /* Light text color */
         }
 
         .video-container {
@@ -77,7 +64,6 @@
 
         .window-titlebar {
             background-color: #222;
-            /* Dark titlebar background color */
             padding: 5px;
             cursor: move;
             display: flex;
@@ -90,29 +76,24 @@
             left: 0;
             width: 100%;
             z-index: 1000;
-            /* Ensure the titlebar stays above other content */
         }
 
         .close-button {
             background-color: transparent;
             border: none;
             color: #ccc;
-            /* Light close button color */
             cursor: pointer;
             font-size: 14px;
         }
 
         .close-button:hover {
             color: #fff;
-            /* Light close button color on hover */
         }
 
         .ip-info {
             padding: 10px;
             background-color: #444;
-            /* Dark info background color */
             border-top: 1px solid #999;
-            /* Dark info border color */
             font-size: 12px;
         }
 
@@ -124,9 +105,7 @@
         #addIpButton {
             padding: 5px 10px;
             background-color: #007bff;
-            /* Light button background color */
             color: #fff;
-            /* Light button text color */
             border: none;
             border-radius: 3px;
             cursor: pointer;
@@ -134,10 +113,8 @@
 
         #addIpButton:hover {
             background-color: #0056b3;
-            /* Light button background color on hover */
         }
 
-        /* CSS */
         .button-89 {
             --b: 3px;
             --s: .45em;
@@ -191,10 +168,9 @@
     </div>
 
     <script>
-        // Global Variables
         let globalLatitude, globalLongitude, asn;
 
-        fetch('/cameras') // Assumes Go server exposes a /cameras endpoint
+        fetch('/cameras')
             .then(response => response.json())
             .then(data => {
                 const cameraList = document.getElementById('cameraList');
@@ -210,28 +186,22 @@
             })
             .catch(error => console.error('Error fetching online cameras:', error));
 
-        // Function to switch between tabs
         function openTab(evt, tabName) {
-            // Get all elements with class="tabcontent" and hide them
             const tabcontent = document.getElementsByClassName('tabcontent');
             for (let i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = 'none';
             }
 
-            // Get all elements with class="tablinks" and remove the class "active"
             const tablinks = document.getElementsByClassName('tablinks');
             for (let i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(' active', '');
             }
 
-            // Show the current tab, and add an "active" class to the button that opened the tab
             document.getElementById(tabName).style.display = 'block';
             evt.currentTarget.className += ' active';
         }
 
-        // Function to open a new video container window with the selected RTSP stream
         function openVideoWindow(rtspUrl) {
-            // Create a new video container window
             const newWindow = document.createElement('div');
             newWindow.className = 'window video-container';
             newWindow.innerHTML = `
@@ -291,11 +261,8 @@
             */
 
             document.body.appendChild(newWindow);
-            // Make the new window draggable
             makeDraggable(newWindow);
-            // Fetch IP information
             fetchIPInfo(rtspUrl);
-            // Fetch weather information
             if (globalLatitude && globalLongitude) {
                 fetchWeather(globalLatitude, globalLongitude);
             }
@@ -305,7 +272,6 @@
 
         function updateAsnDetails(asnDetails) {
             const asnSiteTab = document.getElementById('asn-site');
-            // Remove "Get this" from whois section
             const whoisContent = asnDetails.whois.replace(/Get this[\s\S]*/, '');
             const asnDetailsContent = `
         <p>More information here -> <button class="button-89" onclick="window.open('https://ipinfo.io/${asn}')">[#]</button></p>
@@ -317,18 +283,15 @@
             asnSiteTab.innerHTML = asnDetailsContent;
         }
 
-        // Function to parse ASN details from the HTML content
         function parseASNDetails(html) {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
 
-            // Extract specific information from div elements with IDs
             const ranges = doc.getElementById('block-ranges').innerText;
             const whois = doc.getElementById('block-whois').innerText;
             const domains = doc.getElementById('block-domains').innerText;
             const peers = doc.getElementById('block-peers').innerText;
-
-            // Return an object containing the extracted information
+            
             return {
                 ranges,
                 whois,
@@ -337,7 +300,6 @@
             };
         }
 
-        // Function to fetch and update ASN details periodically
         async function fetchAndUpdateASN() {
             setInterval(async () => {
                 try {
@@ -352,13 +314,11 @@
         }
 
 
-        // Function to close a video container window
         function closeVideoWindow() {
             const videoContainer = document.querySelector('.video-container');
             videoContainer.remove();
         }
 
-        // Function to make a window draggable
         function makeDraggable(windowElement) {
             let pos1 = 0,
                 pos2 = 0,
@@ -397,9 +357,7 @@
         const titlebar = document.getElementById('windowTitlebar');
         makeDraggable(sidebar, titlebar);
 
-        // Function to fetch and display IP information
         function fetchIPInfo(rtspUrl) {
-            // Extract IP address from RTSP URL
             const ip = rtspUrl.match(/(\d+\.\d+\.\d+\.\d+)/)[0];
             fetch(
                     `http://ip-api.com/json/${ip}?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query`
@@ -437,7 +395,6 @@
             <p><strong>Hosting:</strong> ${data.hosting}</p>
             <p><strong>Query:</strong> ${data.query}</p>
         `;
-                    // Add Google Maps iframe
                     const googleMaps = document.getElementById('googleMaps');
                     googleMaps.innerHTML = `
             <iframe width="90%" height="487px" frameborder="0" style="border:0" src="https://maps.google.com/maps?width=100%&amp;height=600&amp;hl=en&amp;coord=${data.lat},${data.lon}&amp;q=1%20${data.district}%20Street%2C%20${data.city}%2C%20${data.regionName}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" allowfullscreen></iframe>
@@ -449,7 +406,6 @@
                 });
         }
 
-        // Function to fetch weather information based on latitude and longitude
         async function fetchWeather(latitude, longitude) {
             const apiKey = 'c7c2c23be4a6fc61d78031f24d014a88';
             const apiUrl =
@@ -467,11 +423,9 @@
             }
         }
 
-        // Function to display weather information in the video container window
         function displayWeatherInfo(weatherData) {
             const weatherInfo = document.getElementById('weatherInfo');
             if (weatherInfo) {
-                // Convert temperature from Kelvin to Celsius
                 const temperatureCelsius = weatherData.main.temp - 273.15;
                 const temperatureCelsiusFeels = weatherData.main.feels_like - 273.15;
 
@@ -498,7 +452,6 @@
             }
         }
 
-        // Function to add a new IP address
         const addIpButton = document.getElementById('addIpButton');
         addIpButton.addEventListener('click',
             () => {
@@ -516,10 +469,9 @@
                     addIpInput.value = '';
                 }
             });
-        // Function to update the camera list with new IP addresses
         function updateCameraList(ipList) {
             const cameraList = document.getElementById('cameraList');
-            cameraList.innerHTML = ''; // Clear previous list
+            cameraList.innerHTML = '';
             ipList.forEach(ip => {
                 const listItem = document.createElement('li');
                 listItem.textContent = ip;
@@ -531,13 +483,11 @@
             });
         }
 
-        // Function to add a new IP address to the list
         document.getElementById('addIpForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent form submission
+            event.preventDefault();
             const addIpInput = document.getElementById('addIpInput');
             const newIp = addIpInput.value.trim();
             if (newIp) {
-                // Add new IP address to the list
                 fetch('/add-ip', {
                         method: 'POST',
                         headers: {
@@ -553,15 +503,13 @@
                         }
                     })
                     .then(() => {
-                        // Update UI with the new IP address
                         updateCameraList([...document.querySelectorAll('.camera-list-item')].map(
                             item =>
                             item.textContent).concat(newIp));
-                        addIpInput.value = ''; // Clear input field
+                        addIpInput.value = '';
                     })
                     .catch(error => {
                         console.error('Error adding IP address:', error);
-                        // Handle error
                     });
             }
         });
