@@ -19,7 +19,7 @@ A web application that provides a Windows-style interface for managing and viewi
 3. Start the local server:
 
     ```bash
-    node server.js
+    node start.js
     ```
 
 ## Usage
